@@ -5,14 +5,16 @@ let r = 255;
 let g = 255;
 let b = 255;
 let bodySize = 50;
+const MAX_THRESHOLD = 120;
 
 function setup() {
     createCanvas(800, 500);
 }
 
 function draw() {
-    background(79, 88, 125, 60);
+    background(79, 88, 125, 30);
     text("frameCount: " + frameCount, 20, 30);
+
 
     stroke(194, 224, 238, 80);
     strokeWeight(1);
@@ -23,9 +25,16 @@ function draw() {
         let dia = random(10, 30);
         circle(x, y, dia);
     }
-    r = map(sin(frameCount * 0.01), -1, 1, 100, 255);
-    g = map(sin(frameCount * 0.01 + 2), -1, 1, 50, 220);
-    b = map(sin(frameCount * 0.01 + 4), -1, 1, 180, 255);
+
+    if (frameCount > 500) {
+        r = 220;
+        g = 30;
+        b = 30;
+    } else {
+        r = 255;
+        g = 255;
+        b = 255;
+    }
 
     drawCreature(x, y);
 
@@ -35,7 +44,9 @@ function draw() {
             y = y + random(-15, 15);
         }
     } else {
-        bodySize += 30;
+        if (mouseIsPressed) {
+            bodySize += 20;
+        }
     }
 }
 
@@ -44,7 +55,10 @@ function drawCreature(x, y) {
     translate(x, y);
 
     drawBody(0, 0, bodySize);
-    drawArm();
+
+    if (bodySize <= MAX_THRESHOLD) {
+        drawArm();
+    }
 
     pop();
 }
@@ -52,9 +66,14 @@ function drawCreature(x, y) {
 function drawBody(x, y, size) {
     push();
     noStroke();
-    fill(r, g, b, 80);
-    let dia = size + random(-10, 10);
-    circle(x, y, dia);
+    fill(r, g, b, 40);
+    if (frameCount < 500) {
+        size = size + random(-10, 10);
+    }
+    if (frameCount > 500) {
+        size = size + random(-30, 30);
+    }
+    circle(x, y, size);
     pop();
 }
 
@@ -81,4 +100,7 @@ function drawArm() {
 
         pop();
     }
+
+
+
 }
