@@ -3,10 +3,8 @@ let scannedImages = [];
 let down;
 let icecream;
 
-// current indices for animation
 let currentDownIndex = 0;
 let currentIcecreamIndex = 0;
-
 
 let icecreamY = -100;
 let icecreamSpeedY = 0;
@@ -21,17 +19,13 @@ async function setup() {
     }
     scannedImages = await Promise.all(imagePromises);
 
-    // erase background and crop images
     eraseBackground(scannedImages, 10);
 
-    // crop parts of images
     down = crop(scannedImages, 0, 0, 585, 356);
     icecream = crop(scannedImages, 600, 0, 1600, 600);
 }
-
 function draw() {
     background(255);
-
 
     currentDownIndex = floor((frameCount / 20) % down.length);
     image(
@@ -41,18 +35,13 @@ function draw() {
         down[0].width * 0.25,
         down[0].height * 0.25
     );
-
-
     currentIcecreamIndex = floor((frameCount / 10) % icecream.length);
     icecreamSpeedY += 0.1;
     icecreamY += icecreamSpeedY;
-
-
     if (icecreamY > height + 100) {
         icecreamY = -100;
         icecreamSpeedY = 0;
     }
-
     push();
     translate(width / 2, icecreamY);
     //rotate(radians(90));
@@ -66,7 +55,6 @@ function draw() {
     );
     pop();
 }
-
 // IMAGE PROCESSING FUNCTIONS
 function crop(images, x, y, width, height) {
     const croppedImages = [];
